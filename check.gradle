@@ -1,0 +1,6 @@
+task check (type : Exec) {
+    print 'Check task on deployment-recipes:'
+    workingDir '.'
+    executable = "tox"
+    args "-r"
+}
