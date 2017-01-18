@@ -1,9 +1,9 @@
-===========================
-OpenPOWER Reference Designs
-===========================
+=======================================
+OpenStack recipes for OpenPOWER Servers
+=======================================
 
 This project provides recipes for provisioning OpenStack clouds and
-application clusters on OpenPower servers::
+application clusters on OpenPOWER servers::
 
     - Private cloud w/ and w/o Swift Object Storage
     - Database as a Service (Trove)
@@ -51,25 +51,27 @@ provided in README files of related projects.
 Getting Started
 ---------------
 
-The toolkit runs on an Ubuntu 16.04 OpenPower server or VM that is connected
+The toolkit runs on an Ubuntu 16.04 OpenPOWER server or VM that is connected
 to the internet and management switch in the cluster to be configured.
 
 #. Get a local copy of this github project::
 
-   $ git clone git://github.com/open-power-ref-design/deployment-recipes
-   $ cd deployment-recipes
+   $ git clone git://github.com/open-power-ref-design/openstack-recipes
+   $ cd openstack-recipes
 
-#. Select and read the desired solution specific README file, one of:
+#. Choose one of the following solutions to deploy:
 
-   - README-dbaas.rst
-   - README-swift.rst
+   - `README-dbaas.rst <https://github.com/open-power-ref-design/openstack-recipes/blob/master/README-dbaas.rst>`_
+   - `README-swift.rst <https://github.com/open-power-ref-design/openstack-recipes/blob/master/README-swift.rst>`_
 
-#. Read the associated Bill of Materials file as noted in the README, one of:
+   The private compute cloud solution is described in the DBaaS document.
 
-   - `bom/dbaas.pdf <https://github.com/open-power-ref-design/deployment-recipes/blob/master/bom/dbaas.pdf>`_
-   - `bom/swift.pdf <https://github.com/open-power-ref-design/deployment-recipes/blob/master/bom/swift.pdf>`_
+#. Read the associated Bill of Materials (BOM) file as noted in the README, one of:
 
-   The private compute cloud is covered in the file bom/dbaas
+   - `bom/dbaas.pdf <https://github.com/open-power-ref-design/openstack-recipes/blob/master/bom/dbaas.pdf>`_
+   - `bom/swift.pdf <https://github.com/open-power-ref-design/openstack-recipes/blob/master/bom/swift.pdf>`_
+
+   The private compute cloud BOM is included in the DBaaS BOM.
 
 #. Rack and cable hardware as indicated in the selected BOM
 
