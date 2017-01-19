@@ -25,10 +25,10 @@ TOP_DIR = path.join(os.getcwd(), path.dirname(__file__), '..')
 SCRIPT_DIR = 'scripts'
 sys.path.append(path.join(TOP_DIR, SCRIPT_DIR))
 
-import validate_inventory as test_mod
+import validate_config as test_mod
 
 
-class TestValidateInventory(unittest.TestCase):
+class TestValidateConfig(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -221,25 +221,25 @@ class TestValidateInventory(unittest.TestCase):
     def test_validate_ops_mgr(self):
         # Test valid case
         net = 'openstack-mgmt'
-        inventory = {'networks': {net: {}},
-                     'node-templates': {'a': {'networks': [net]},
-                                        'b': {'networks': [net]}}}
-        test_mod.validate_ops_mgr(inventory)
+        config = {'networks': {net: {}},
+                  'node-templates': {'a': {'networks': [net]},
+                                     'b': {'networks': [net]}}}
+        test_mod.validate_ops_mgr(config)
 
         # Test missing network
-        inventory['networks'].pop(net)
+        config['networks'].pop(net)
         self.assertRaisesRegexp(test_mod.UnsupportedConfig,
                                 'required openstack-mgmt network',
                                 test_mod.validate_ops_mgr,
-                                inventory)
+                                config)
         # Test one template missing the network
-        inventory['networks'][net] = {}
-        inventory['node-templates']['a']['networks'].pop(0)
+        config['networks'][net] = {}
+        config['node-templates']['a']['networks'].pop(0)
         expected_msg = 'The node template a is missing network openstack-mgmt'
         self.assertRaisesRegexp(test_mod.UnsupportedConfig,
                                 expected_msg,
                                 test_mod.validate_ops_mgr,
-                                inventory)
+                                config)
 
     @mock.patch.object(test_mod, 'validate_ops_mgr')
     @mock.patch.object(test_mod, 'validate_ceph')

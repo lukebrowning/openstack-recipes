@@ -92,7 +92,7 @@ to the internet and management switch in the cluster to be configured.
    $ git checkout release-0.9
    $ cp ../configs/<selected filename> config.yml
    $ mkdir -p domain/scripts/
-   $ cp ../scripts/validate_inventory.py domain/scripts/
+   $ cp ../scripts/validate_config.py domain/scripts/
    $ popd
 
 #. Edit the *placed* config.yml file to reflect the actual configuration
@@ -111,7 +111,7 @@ to the internet and management switch in the cluster to be configured.
 
 #. Validate the *placed* config.yml file by running the following command::
 
-   $ ./scripts/validate_inventory.py --file ../cluster-genesis/config.yml
+   $ ./scripts/validate_config.py --file ../cluster-genesis/config.yml
 
 #. Launch the toolkit
 
