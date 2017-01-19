@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2016, IBM US, Inc.
+# Copyright 2016, 2017 IBM US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,3 +254,79 @@ class TestValidateConfig(unittest.TestCase):
         swift.assert_called_once_with(load.return_value)
         ceph.assert_called_once_with(load.return_value)
         opsmgr.assert_called_once_with(load.return_value)
+
+    def test_validate_ceph(self):
+        # Validate without ceph-standalone or private compute
+        config = {'reference-architecture': ['swift']}
+        test_mod.validate_ceph(config)
+
+        # Test valid network configurations
+        valid_combos = {test_mod.CEPH: 'ceph-public-storage',
+                        test_mod.COMPUTE: 'openstack-stg'}
+        for arch, net in valid_combos.iteritems():
+            node_templ = {'controllers': {'networks': [net]},
+                          'ceph-osd': {'networks': [net],
+                                       'domain-settings': {
+                                           'osd-devices': ['a']}}}
+            config = {'reference-architecture': [arch],
+                      'networks': {net: {}},
+                      'node-templates': node_templ}
+            test_mod.validate_ceph(config)
+
+        # Test bad network configurations
+        bad_combos = {test_mod.CEPH: 'external',
+                      test_mod.COMPUTE: 'ceph-public-storage'}
+        for arch, net in bad_combos.iteritems():
+            node_templ = {'controllers': {'networks': [net]},
+                          'ceph-osd': {'networks': [net],
+                                       'domain-settings': {
+                                           'osd-devices': ['a']}}}
+            config = {'reference-architecture': [arch],
+                      'networks': {net: {}},
+                      'node-templates': node_templ}
+            self.assertRaisesRegexp(test_mod.UnsupportedConfig,
+                                    'Ceph storage network',
+                                    test_mod.validate_ceph,
+                                    config)
+
+        # Test when the network exists but appropriate node templates
+        # don't have it.
+        for arch, net in valid_combos.iteritems():
+            node_templ = {'controllers': {'networks': ['somenet']},
+                          'ceph-osd': {'networks': ['somenet'],
+                                       'domain-settings': {
+                                           'osd-devices': ['a']}}}
+            config = {'reference-architecture': [arch],
+                      'networks': {net: {}},
+                      'node-templates': node_templ}
+            self.assertRaisesRegexp(test_mod.UnsupportedConfig,
+                                    'is missing network',
+                                    test_mod.validate_ceph,
+                                    config)
+
+        # Test missing device list
+        net = 'ceph-public-storage'
+        arch = test_mod.CEPH
+        node_templ = {'controllers': {'networks': [net]},
+                      'ceph-osd': {'networks': [net],
+                                   'domain-settings': {
+                                       'osd-devices': []}}}
+        config = {'reference-architecture': [arch],
+                  'networks': {net: {}},
+                  'node-templates': node_templ}
+        self.assertRaisesRegexp(test_mod.UnsupportedConfig,
+                                'missing the osd-devices',
+                                test_mod.validate_ceph,
+                                config)
+
+        node_templ['ceph-osd']['domain-settings'].pop('osd-devices')
+        self.assertRaisesRegexp(test_mod.UnsupportedConfig,
+                                'missing the osd-devices',
+                                test_mod.validate_ceph,
+                                config)
+
+        node_templ['ceph-osd'].pop('domain-settings')
+        self.assertRaisesRegexp(test_mod.UnsupportedConfig,
+                                'missing the osd-devices',
+                                test_mod.validate_ceph,
+                                config)
