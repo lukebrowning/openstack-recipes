@@ -23,7 +23,7 @@
 # nodes, and the account, container, and object rings converged on the same
 # set of nodes.
 
-version: 1.0
+version: 1.1
 
 reference-architecture:
     - private-compute-cloud
@@ -97,6 +97,7 @@ networks:
         addr: 172.29.240.0/22
         vlan: 30
         eth-port: eth11
+        mtu: 9000
     openstack-tenant-vlan:
         description: OpenStack Tenant vlan Network
         bridge: br-vlan
@@ -104,6 +105,7 @@ networks:
         addr: 0.0.0.0/1  # Nodes do not get IPs assigned in this network
         eth-port: eth11
         bridge-port: veth12
+        mtu: 9000
     ceph-replication:
         description: Ceph Replication Network
         addr: 172.29.248.0/22
@@ -321,33 +323,36 @@ node-templates:
             - openstack-stg
             - swift-replication
 
-software-bootstrap-hosts: controllers[0]  # Select first 'controllers' node
-software-bootstrap-cmd: |
-    set -o pipefail
-    apt-get -y update >/dev/null 2>&1
-    type git >/dev/null 2>&1
-    if [ $? != 0 ]; then
-        apt-get install -qq -y git
-    fi
-    if [ ! -d os-services ]; then
-        git clone git://github.com/open-power-ref-design/os-services.git
-    fi
-    cd os-services
-#    git checkout v1.3.0
-    export DEPLOY_CEPH=yes
-    export DEPLOY_OPSMGR=yes
-    # export ANSIBLE_HOST_KEY_CHECKING=False
-    ./scripts/bootstrap-cluster.sh | tee -a ../bootstrap-cluster.out
-    rc=$?
-    if [ $rc != 0 ]; then
-        echo "./scripts/bootstrap-cluster.sh failed, rc=$rc"
-        exit $rc
-    fi
-    HOST=`hostname -A`
-    echo ""
-    echo "The deployment should now be continued on the first controller node"
-    echo "Please log into $HOST and complete the installation"
-    echo ""
-    echo "ssh ubuntu@$HOST"
-    echo "sudo su"
-    echo "cd ~/os-services"
+software-bootstrap:
+    controllers[0]: |
+        /bin/bash -c '
+        set -o pipefail
+        apt-get -y update >/dev/null 2>&1
+        type git >/dev/null 2>&1
+        if [ $? != 0 ]; then
+            apt-get install -qq -y git
+        fi
+        if [ ! -d os-services ]; then
+            git clone git://github.com/open-power-ref-design/os-services.git
+        fi
+        cd os-services
+        # git checkout v1.3.0
+        export DEPLOY_CEPH=yes
+        export DEPLOY_OPSMGR=yes
+        # export ANSIBLE_HOST_KEY_CHECKING=False
+        ./scripts/bootstrap-cluster.sh | tee -a ../bootstrap-cluster.out
+        rc=$?
+        if [ $rc != 0 ]; then
+            echo "./scripts/bootstrap-cluster.sh failed, rc=$rc"
+            exit $rc
+        fi
+        HOST=`hostname -A`
+        echo ""
+        echo "The deployment should now be continued on the first controller node"
+        echo "Please log into $HOST and complete the installation"
+        echo ""
+        echo "ssh ubuntu@$HOST"
+        echo "sudo su"
+        echo "cd ~/os-services"
+        '
+
