@@ -89,7 +89,7 @@ to the internet and management switch in the cluster to be configured.
 
    $ git clone git://github.com/open-power-ref-design/cluster-genesis
    $ pushd cluster-genesis
-   $ git checkout release-0.9
+   $ git checkout release-1.0
    $ cp ../configs/<selected filename> config.yml
    $ mkdir -p domain/scripts/
    $ cp ../scripts/validate_config.py domain/scripts/
