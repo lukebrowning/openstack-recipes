@@ -259,14 +259,15 @@ node-templates:
             - openstack-stg
             - ceph-replication
             - pxe-dhcp
-        journal-devices:
-            - /dev/sdc
-            - /dev/sdd
-        osd-devices:
-            - /dev/sde
-            - /dev/sdf
-            - /dev/sdg
-            - /dev/sdh
+        domain-settings:
+            journal-devices:
+                - /dev/sdc
+                - /dev/sdd
+            osd-devices:
+                - /dev/sde
+                - /dev/sdf
+                - /dev/sdg
+                - /dev/sdh
     swift-object:
         hostname: swiftobject
         userid-ipmi: admin
