@@ -27,7 +27,13 @@ version: 1.1
 reference-architecture:
     - swift
 
-ipaddr-mgmt-network: 192.168.16.0/20
+ipaddr-mgmt-network: 192.168.16.0/24
+ipaddr-mgmt-client-network: 192.168.20.0/24
+vlan-mgmt-network: 16
+vlan-mgmt-client-network: 20
+port-mgmt-network: 46
+port-mgmt-data-network:
+    rack1: 47
 ipaddr-mgmt-switch:
     rack1: 192.168.16.20
 ipaddr-data-switch:
@@ -55,8 +61,8 @@ networks:
             # - 10.0.16.115
         broadcast: 10.0.19.255
         gateway: 10.0.16.1
-        dns-nameservers: 10.0.16.200
-        dns-search: mycompany.domain.com
+#        dns-nameservers: 10.0.16.200
+#        dns-search: mycompany.domain.com
         method: static
         eth-port: eth10
         mtu: 9000

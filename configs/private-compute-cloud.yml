@@ -24,7 +24,13 @@ version: 1.1
 reference-architecture:
     - private-compute-cloud
 
-ipaddr-mgmt-network: 192.168.16.0/20
+ipaddr-mgmt-network: 192.168.16.0/24
+ipaddr-mgmt-client-network: 192.168.20.0/24
+vlan-mgmt-network: 16
+vlan-mgmt-client-network: 20
+port-mgmt-network: 46
+port-mgmt-data-network:
+    rack1: 47
 ipaddr-mgmt-switch:
     rack1: 192.168.16.20
 ipaddr-data-switch:
@@ -52,14 +58,16 @@ networks:
             # - 10.0.16.115
         broadcast: 10.0.19.255
         gateway: 10.0.16.1
-        dns-nameservers: 10.0.16.200
-        dns-search: mycompany.domain.com
+#       dns-nameservers: 10.0.16.200
+#       dns-search: mycompany.domain.com
         method: static
         eth-port: eth10
+        mtu: 9000
     external2:
         description: Interface for eth11
         method: manual
         eth-port: eth11
+        mtu: 9000
     pxe-dhcp:
         description: Change pxe port(eth15) to dhcp
         method: dhcp
@@ -72,6 +80,7 @@ networks:
         addr: 172.29.236.0/22
         vlan: 10
         eth-port: eth10
+        mtu: 9000
     openstack-stg:
         description: OpenStack Storage Network
         bridge: br-storage
@@ -80,6 +89,7 @@ networks:
         addr: 172.29.244.0/22
         vlan: 20
         eth-port: eth10
+        mtu: 9000
     openstack-tenant-vxlan:
         description: OpenStack Tenant vxlan Network
         bridge: br-vxlan
@@ -87,6 +97,7 @@ networks:
         addr: 172.29.240.0/22
         vlan: 30
         eth-port: eth11
+        mtu: 9000
     openstack-tenant-vlan:
         description: OpenStack Tenant vlan Network
         bridge: br-vlan
@@ -94,6 +105,7 @@ networks:
         addr: 0.0.0.0/1  # Nodes do not get IPs assigned in this network
         eth-port: eth11
         bridge-port: veth12
+        mtu: 9000
     ceph-replication:
         description: Ceph Replication Network
         addr: 172.29.248.0/22
@@ -101,6 +113,7 @@ networks:
         method: static
         vlan: 40
         eth-port: eth11
+        mtu: 9000
 racks:
     - rack-id: rack1
       data-center: dataeast
