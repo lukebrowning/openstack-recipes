@@ -5,8 +5,9 @@
 #
 # Example:
 #   GIT_BRANCH=master
+#   SOLUTION_BRANCH=master
 #   URL="https://raw.githubusercontent.com/open-power-ref-design/"\
-#   "openstack-recipes/${GIT_BRANCH}/scripts/bootstrap-solution.sh"
+#   "openstack-recipes/${SOLUTION_BRANCH}/scripts/bootstrap-solution.sh"
 #   wget $URL
 #   chmod +x bootstrap-solution.sh
 #   ./bootstrap-solution.sh

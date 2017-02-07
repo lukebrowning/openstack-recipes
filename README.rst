@@ -109,6 +109,12 @@ to the internet and management switch in the cluster to be configured.
    settings if required are located in the solution specific README file
    within this project.
 
+   Within each solution's config file is a bootstrap section that contains the
+   GIT_BRANCH and SOLUTION_BRANCH variables.  The GIT_BRANCH variable should be
+   set to the branch or tag level of the code to load for os-services.  The
+   SOLUTION_BRANCH should be set to the level of openstack-recipes to pull the
+   bootstrap-solution.sh script from.
+
 #. Validate the *placed* config.yml file by running the following command::
 
    $ ./scripts/validate_config.py --file ../cluster-genesis/config.yml
