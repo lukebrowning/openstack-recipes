@@ -58,7 +58,7 @@ to the internet and management switch in the cluster to be configured.
 
    $ git clone git://github.com/open-power-ref-design/openstack-recipes
    $ cd openstack-recipes
-   $ git checkout v1.0.0
+   $ git checkout v1.3.0
 
 #. Choose one of the following solutions to deploy:
 
