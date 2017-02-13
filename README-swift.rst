@@ -8,7 +8,7 @@ instructions describe the general process::
 
     git clone git://github.com/open-power-ref-design/cluster-genesis
     cd cluster-genesis
-    git checkout release-0.9
+    git checkout 1.0.1
 
 Select a sample config.yml to use as a starting point for your
 configuration, for example::

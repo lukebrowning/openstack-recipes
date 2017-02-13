@@ -297,8 +297,8 @@ node-templates:
 
 software-bootstrap:
     controllers[0]: |
-        export GIT_BRANCH=master
-        export SOLUTION_BRANCH=master
+        export GIT_BRANCH=v1.3.0
+        export SOLUTION_BRANCH=v1.0.0
         export DEPLOY_CEPH=no
         export DEPLOY_OPSMGR=yes
         # export ANSIBLE_HOST_KEY_CHECKING=False

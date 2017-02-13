@@ -58,13 +58,14 @@ to the internet and management switch in the cluster to be configured.
 
    $ git clone git://github.com/open-power-ref-design/openstack-recipes
    $ cd openstack-recipes
+   $ git checkout v1.0.0
 
 #. Choose one of the following solutions to deploy:
 
    - `README-dbaas.rst <https://github.com/open-power-ref-design/openstack-recipes/blob/master/README-dbaas.rst>`_
    - `README-swift.rst <https://github.com/open-power-ref-design/openstack-recipes/blob/master/README-swift.rst>`_
 
-   The private compute cloud solution is described in the DBaaS document.
+   The private compute cloud solution is described in the DBaaS BOM below.
 
 #. Read the associated Bill of Materials (BOM) file as noted in the README, one of:
 
@@ -89,7 +90,7 @@ to the internet and management switch in the cluster to be configured.
 
    $ git clone git://github.com/open-power-ref-design/cluster-genesis
    $ pushd cluster-genesis
-   $ git checkout release-1.0
+   $ git checkout 1.0.1
    $ cp ../configs/<selected filename> config.yml
    $ mkdir -p domain/scripts/
    $ cp ../scripts/validate_config.py domain/scripts/
