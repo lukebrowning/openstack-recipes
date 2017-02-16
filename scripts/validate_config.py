@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2016, IBM US, Inc.
+# Copyright 2016, 2016 IBM US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -138,13 +138,38 @@ def _has_separate_metadata_object(inventory):
 
 
 def validate_ceph(inventory):
-    # TODO this method will be filled out when the ceph standalone
-    # reference architecture toolkit changes are implemented
-    # Validate ceph
-    # no ceph-mon when private cloud
-    # ceph-mon when private cloud
-    # existence of proper networks for private-cloud and ceph
-    pass
+    reference_architecture = inventory.get('reference-architecture')
+    if (CEPH not in reference_architecture and
+            COMPUTE not in reference_architecture):
+        # Nothing to validate.  No ref archs that use Ceph.
+        return
+
+    # Validate that the network used for Ceph public storage exists
+    required_net = None
+    if CEPH in reference_architecture:
+        required_net = 'ceph-public-storage'
+    elif COMPUTE:
+        required_net = 'openstack-stg'
+
+    if required_net not in inventory['networks']:
+        msg = ('The required Ceph storage network %s is '
+               'missing.' % required_net)
+        raise UnsupportedConfig(msg)
+
+    # validate that the controllers and ceph-osd node templates
+    # have the network
+    for template in ('controllers', 'ceph-osd'):
+        nets = inventory['node-templates'][template]['networks']
+        if required_net not in nets:
+            msg = 'The node template %(template)s is missing network %(net)s'
+            raise UnsupportedConfig(msg % {'template': template,
+                                           'net': required_net})
+
+    # Validate osd-devices is in domain-settings on the osd node template
+    osd_template = inventory['node-templates']['ceph-osd']
+    if not osd_template.get('domain-settings', {}).get('osd-devices'):
+        msg = 'The ceph-osd node template is missing the osd-devices list.'
+        raise UnsupportedConfig(msg)
 
 
 def validate_ops_mgr(inventory):
